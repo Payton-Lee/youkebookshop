@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>订单数据页</title>
+	</head>
+
+	<body>
+	<table class="table table-hover table-striped" th:each="order,iter:${orders}">
+		<caption class="text-info">
+			<div class="col-md-10" style="padding-left: 0px;">
+				<input type="checkbox" name="cks">&nbsp;<span th:text="${#calendars.format(order.createDate, 'yyy-MM-dd')}">2017-01-09 </span> 订单号:<span th:text="${order.orderNum}">1527600039447022</span>单
+			</div>
+			<div class="col-md-2" style="text-align: right;">
+				<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" th:href="@{'#collapseDeatil' + ${iter.index}}">订单详情</a>
+			</div>
+		</caption>
+		<thead>
+		<tr id="collapseThree" th:id="${'collapseDeatil' + iter.index}" class="panel-collapse collapse">
+			<td colspan="9">
+				<div class="panel-body">
+					<!--tab选项卡 begin-->
+					<ul id="myTab" class="nav nav-tabs">
+						<li class="active">
+							<a href="#home" th:href="@{'#home' + ${order.id}}" data-toggle="tab">
+								联系人信息
+							</a>
+						</li>
+						<li>
+							<a href="#ios" th:href="@{'#ios' + ${order.id}}" data-toggle="tab">订单信息</a>
+						</li>
+					</ul>
+					<div id="myTabContent" class="tab-content">
+						<div class="tab-pane fade in active" th:id="${'home' + order.id}" id="home">
+							<div class="row">
+								<div>
+									<ul class="nav navbar-collapse" style="line-height: 3";>
+										<li class="text-info"><span class="text-success">姓名:</span><span class="text-info" th:text="${order.user.username}">管成功</span></li>
+										<li class="text-info"><span class="text-success">联系方式:</span> <span th:text="${order.user.phone}">15906128572</span></li>
+										<li class="text-info"><span class="text-success">收货地址:</span><span th:text="${order.address.province} + ${order.address.city} + ${order.address.area} + ${order.address.detailAddress}">江苏省苏州市姑苏区烽火路80号天创企业3楼</span>/li>
+									</ul>
+								</div>
+							</div>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="ios" th:id="${'ios' + order.id}">
+							<div class="row">
+								<div>
+									<ul class="nav navbar-collapse" style="line-height: 3";>
+										<li class="text-info"><span class="text-success">订单编号:</span><span th:text="${order.orderNum}">1527600039447022</span></li>
+										<li class="text-info"><span class="text-success">交易时间:</span><span th:text="${#calendars.format(order.createDate, 'yyy-MM-dd hh:mm:ss')}">2017-01-09 </span></li>
+										<li class="text-info"><span class="text-success">订单总金额:</span><span th:text="${order.totalPrice}">520.0</span>元</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--tab选项卡 end-->
+				</div>
+			</td>
+		</tr>
+		<tr class="active">
+			<th>序号</th>
+			<th>图片</th>
+			<th>图片名称</th>
+			<th>单价(元)</th>
+			<th>数量</th>
+			<th>实付款(元)</th>
+			<th>付款日期</th>
+			<th>交易状态</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr class="warning" th:each="items:${order.orderItems}">
+			<td th:text="${items.book.id}">1001</td>
+			<td><img th:src="@{'/public/' + ${items.book.imgUrl}}" src="images/yuannideqingchunbufumengxiang.jpg"></td>
+			<td th:text="${items.book.name}">愿你的青春不负梦想</td>
+			<td th:text="${items.book.newPrice}">80.0</td>
+			<td th:text="${items.count}">2</td>
+			<td th:text="${items.count * items.book.newPrice}">160.0</td>
+			<td th:text="${#calendars.format(order.createDate, 'dd/MM/yyy')}">01/08/2017</td>
+			<td>未付款</td>
+		</tr>
+		</tbody>
+	</table>
+	</body>
+</html>

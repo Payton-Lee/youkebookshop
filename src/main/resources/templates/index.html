@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>优客书城首页</title>
+	<link rel="stylesheet" type="text/css"  href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="css/index.css" th:href="@{/css/index.css}" />
+	<link rel="stylesheet" type="text/css" href="css/animate.css" th:href="@{/css/animate.css}" />
+	</head>
+
+	<body>
+		<!--导航部分  begin-->
+		<div th:replace="common/header :: header"></div>
+		<!--导航部分 end-->
+
+		<!--最顶端轮播图片 begin-->
+		<div th:replace="common/carouse :: carouse"></div>
+		<!--最顶端轮播图片 end-->
+
+		<!--图书内容部分 begin-->
+		<div class="container">
+			<!--精选图书 begin-->
+			<div>
+				<div class="text-primary"><img src="images/bullet1.gif" th:src="@{/images/bullet1.gif}" style="vertical-align: middle" alt="" title="">
+					<a href="#" th:href="@{/book/bookList(category=1)}">精选图书</a>
+				</div>
+<!--				加载数据-->
+				<div id="selected"></div>
+			</div>
+			<!--精选图书 end-->
+
+			<!--推荐图书 begin-->
+			<div>
+				<div class="text-primary"><img src="images/bullet1.gif" th:src="@{/images/bullet1.gif}" alt="" title="">
+					<a href="#" th:href="@{/book/bookList(category=2)}">推荐图书</a>
+				</div>
+				<div id="recommend"></div>
+			</div>
+			<!--推荐图书end..-->
+
+			<!--特价图书 begin-->
+			<div>
+				<div class="text-primary"><img src="images/bullet1.gif" th:src="@{/images/bullet1.gif}" alt="" title="">
+					<a href="#" th:href="@{/book/bookList(category=3)}">特价图书</a>
+				</div>
+				<div id="bargain"></div>
+			</div>
+			<div id="searchList"></div>
+			<!--特价图书 end-->
+			<hr>
+			<!--首页底部信息 begin-->
+			<div th:replace="common/footer :: footer"></div>
+		</div>
+		<!--首页底部信息end-->
+		<!--图书内容部分end-->
+
+		<div th:replace="common/bookModal :: bookModal"></div>
+
+		<script src="dist/js/jquery.min.js" th:src="@{/dist/js/jquery.min.js}"></script>
+		<script src="js/carousel.js" th:src="@{/js/carousel.js}" type="text/javascript" charset="utf-8"></script>
+		<script src="dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
+		<script src="js/wow.js" th:src="@{/js/wow.js}"></script>
+        <script th:src="@{/js/login_reg.js}"></script>
+		<script th:inline="javascript">
+			//获取应用路径
+			var contextPath = [[${#request.getContextPath()}]]
+		</script>
+		<script type="text/javascript">
+			if(!(/msie [6|7|8|9]/i.test(navigator.userAgent))) {
+				new WOW().init();
+			};
+
+			$(function () {
+
+				$("#selected").load(contextPath + "/book/getBookData", buildQuery(1,1));
+				$("#recommend").load(contextPath + "/book/getBookData", buildQuery(1,2));
+				$("#bargain").load(contextPath + "/book/getBookData", buildQuery(1,3));
+			})
+			// 加载其他页的数据
+			function loadData(page,category) {
+				var node;
+				if(category === 1){
+					node = "selected";
+				}else if (category === 2){
+					node = "recommend";
+				}else {
+					node = "bargain";
+				}
+				$("#" + node).load(contextPath + "/book/getBookData", buildQuery(page,category));
+			}
+			// 包装查询出参数
+			function buildQuery(page,category) {
+				var query = {};
+				query.page = typeof  page == "undefined" ? 1 : page;
+				query.category = category;
+				return query;
+			}
+			// 验证用户名是否已经存在
+			function checkUser(obj) {
+				$.ajax({
+					url: contextPath + '/user/checkUserName',
+					data: {"username": obj.value},
+					method: "post",
+					success: function (data) {
+						$("#message").css("display", "block");
+						if( data === "102") {
+							$("#tip").html("用户名不合法");
+							$("#tip").removeClass("alert-success");
+							$("#tip").addClass("alert-danger");
+						} else {
+							$("#tip").html("用户名可以注册");
+							$("#tip").removeClass("alert-danger");
+							$("#tip").addClass("alert-success");
+						}
+					}
+				})
+			}
+
+		</script>
+	</body>
+
+</html>

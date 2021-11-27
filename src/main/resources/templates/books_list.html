@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>图书列表</title>
+	<link rel="stylesheet" type="text/css"  href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="css/index.css" th:href="@{/css/index.css}" />
+	<link rel="stylesheet" type="text/css" href="css/animate.css" th:href="@{/css/animate.css}" />
+	
+	</head>
+	<body>
+		<!--导航部分  begin-->
+		<div th:replace="common/header :: header"></div>
+		<!--导航部分 end-->
+
+		<!--最顶端轮播图片 begin-->
+		<div th:replace="common/carouse :: carouse"></div>
+		<!--最顶端轮播图片 end-->
+		<div class="container">	
+			<ol class="breadcrumb">
+			    <li><a href="#">图书列表</a></li>
+			    <li><a href="#">精选图书</a></li>
+			</ol>
+		</div>
+		<!--展示数据开始-->
+		<div id="bookList"></div>
+		<!--展示数据结束-->
+		<!--地址-->
+		<div class="container">
+		<hr>
+			<!--首页底部信息 begin-->
+			<div th:replace="common/footer :: footer"></div>
+		</div>
+		<!--end-->
+		<div th:replace="common/bookModal :: bookModal"></div>
+		<script src="dist/js/jquery.min.js" th:src="@{/dist/js/jquery.min.js}"></script>
+		<script src="js/carousel.js" th:src="@{/js/carousel.js}" type="text/javascript" charset="utf-8"></script>
+		<script src="dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
+		<script src="js/wow.js" th:src="@{/js/wow.js}"></script>
+		<script th:src="@{/js/login_reg.js}"></script>
+		<script th:inline="javascript">
+			//获取应用路径
+			var contextPath = [[${#request.getContextPath()}]];
+			var category = [[${category}]];
+		</script>
+		<script type="text/javascript">
+			if(!(/msie [6|7|8|9]/i.test(navigator.userAgent))) {
+				new WOW().init();
+			};
+			$(function () {
+				$("#bookList").load(contextPath + "/book/getBookListData", queryData(1, '', category));
+			})
+			function queryData(page,pageSize, category) {
+				var query = {};
+				query.category = category;
+				query.page = page;
+				query.pageSize = pageSize == '' ? 4 : pageSize;
+				return query;
+			}
+			function loadData(page, pageSize,category) {
+				$("#bookList").load(contextPath + "/book/getBookListData", queryData(page,pageSize,category));
+			}
+			//跳转到指定页
+			function goPage(pageSize,category) {
+				var page = $("#inputPage").val();
+				$("#bookList").load(contextPath + "/book/getBookListData",queryData(page,pageSize,category))
+			}
+
+			//修改指定每页显示的记录数
+			function loadDataBySize(obj) {
+				$("#bookList").load(contextPath + "/book/getBookListData",queryData(1,obj.value,category))
+			}
+		</script>
+	</body>
+</html>

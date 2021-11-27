@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="bookModal">
+    <!-- 登录模态框（Modal） -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="loginModalLabel">
+                        用户登录
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <!--登录的form表单-->
+                    <form class="form-horizontal" id="loginForm" role="form" action="">
+                        <div class="form-group has-feedback">
+                            <label for="firstname" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-5">
+
+                                <input type="text" class="form-control" id="firstname" name="username" placeholder="请输入用户名">
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+                            <div class="col-sm-3" id="userTip" style="padding-top: 10px; display: none">
+                                <label class="alert-danger">用户名不存在</label>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label  class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-5">
+                                <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            </div>
+                            <div class="col-sm-3" id="pwdTip" style="padding-top: 10px; display: none">
+                                <label class="alert-danger">密码不正确</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">请记住我
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <input type="button" class="btn btn-primary" value="登录" th:onclick="|login()|">
+                        </div>
+                    </form>
+                    <!--form结束-->
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+    <!-- 登录modal end/.modal -->
+    <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="regModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="regModalLabel">
+                        用户注册
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <!--登录的form表单-->
+                    <form id="regForm" action="" class="form-horizontal" role="form">
+                        <div class="form-group has-feedback">
+                            <label for="firstname" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="username"  required placeholder="小写字母开头,不含中文." th:onblur="|checkUser(this)|">
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+                            <div id="message" class="col-sm-3" style="padding-top: 10px; display: none" >
+                                <label class="alert-danger" id="tip">用户名不合法</label>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-5">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="密码长度6-18位" minlength="6" maxlength="18" th:onblur="|checkLength(this)|">
+                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            </div>
+                            <div class="col-sm-3" id="pwdmsg" style="padding-top: 10px; display: none">
+                                <label class="alert-danger" id="wrongpwd">密码长度不合法</label>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-2 control-label">确认密码</label>
+                            <div class="col-sm-5">
+                                <input type="password" class="form-control" id="confirmpwd" minlength="6" maxlength="18" placeholder="和密码保持一致" th:onblur="|checkPassword(this)|">
+                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            </div>
+                            <div id="msg" class="col-sm-3" style="padding-top: 10px; display: none" >
+                                <label class="alert-danger" id="cfmtip">密码不一致</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-2 control-label">邮箱</label>
+                            <div class="col-sm-5">
+                                <input type="email" name="email" class="form-control"  placeholder="合法邮箱格式">
+                                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-2 control-label">电话</label>
+                            <div class="col-sm-5">
+                                <input type="tel" name="phone" class="form-control" placeholder="合法手机格式">
+                                <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-2 control-label">公司</label>
+                            <div class="col-sm-5">
+                                <input type="text" name="company" class="form-control"  placeholder="请输入公司地址">
+                                <span class="glyphicon glyphicon-home form-control-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <input type="submit" class="btn btn-primary" value="注册" th:onclick="|register()|">
+                        </div>
+                    </form>
+                    <!--form结束-->
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+</header>

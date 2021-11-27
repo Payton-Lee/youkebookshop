@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>图书列表</title>
+	<link rel="stylesheet" type="text/css"  href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="css/index.css" th:href="@{/css/index.css}" />
+	<link rel="stylesheet" type="text/css" href="css/animate.css" th:href="@{/css/animate.css}" />
+	
+	</head>
+	<body>
+	<div class="row">
+		<div class="container">
+			<div class="col-sm-6 col-md-3" th:each="seach:${searchList}">
+				<div class="thumbnail">
+					<a href="details.html" th:href="@{/book/detail(id=${seach.id})}"><img src="images/beiwei78.jpg" th:src="@{'/public/' + ${seach.imgUrl}}" alt="通用的占位符缩略图"></a>
+					<div class="caption">
+						<h3 th:classappend="h3-height" th:text="${seach.name}"></h3>
+						<p th:classappend="p-height">价格:<span th:text="${seach.newPrice}"></span>元&nbsp;&nbsp;作者:<span th:text="${seach.author}"></span>&nbsp;&nbsp;</p>
+						<p>
+							<a href="details.html" th:href="@{/book/detail(id=${seach.id})}">
+								更多信息
+							</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--分页-->
+	</div>
+	</body>
+</html>

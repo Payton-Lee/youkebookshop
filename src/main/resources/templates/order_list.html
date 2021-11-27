@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>我的订单</title>
+	<link rel="stylesheet" type="text/css"  href="dist/css/bootstrap.min.css" th:href="@{/dist/css/bootstrap.min.css}" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" th:href="@{/css/index.css}" />
+	<link rel="stylesheet" type="text/css" href="css/animate.css" th:href="@{/css/animate.css}" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}"/>
+	<link rel="stylesheet" type="text/css" href="css/order_list.css" th:href="@{/css/order_list.css}"/>
+	</head>
+
+	<body>
+		<!--导航部分  begin-->
+		<div th:replace="common/header :: header"></div>
+		<!--导航部分 end-->
+
+		<!--最顶端轮播图片 begin-->
+		<div th:replace="common/carouse :: carouse"></div>
+		<!--最顶端轮播图片 end-->
+
+		<!--订单begin-->
+		<!--外层div-->
+		<div class="container">
+			<!--左边-->
+			<div class="container pull-left">
+				<ol class="breadcrumb">
+					<li>
+						<a href="#" class="text-success"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;我的订单</a>
+					</li>
+				</ol>
+
+				<!--订单查询导航 begin-->
+				<div>
+					<nav class="navbar navbar-default" role="navigation">
+						<div class="navbar-header">
+							<a class="navbar-brand" href="#">所有订单</a>
+						</div>
+
+						<form class="navbar-form navbar-left" role="search">
+							<input type="text" class="form-control" placeholder="输入订单号进行查询">
+							<button type="button" class="btn btn-search">
+			                  	<span class="text-success">Search</span>&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span>
+			            	</button>
+						</form>
+
+						<ul class="nav navbar-nav navbar-left">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									交易状态
+									<b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">全部</a>
+									</li>
+									<li class="divider"></li>
+									<li>
+										<a href="#">已付款</a>
+									</li>
+									<li class="divider"></li>
+									<li>
+										<a href="#">未付款</a>
+									</li>
+									<li class="divider"></li>
+									<li>
+										<a href="#">交易成功</a>
+									</li>
+									<li class="divider"></li>
+								</ul>
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-left">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									订单排序
+									<b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">订单日期降序</a>
+									</li>
+									<li class="divider"></li>
+									<li>
+										<a href="#">订单日期升序</a>
+									</li>
+									<li class="divider"></li>
+								</ul>
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li style="padding-right: 15px;">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">更多筛选条件</a>
+							</li>
+						</ul>
+
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="#">删除订单</a>
+							</li>
+						</ul>
+							<ul class="nav navbar-nav">
+							<li>
+								<a href="#">清空订单列表</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+
+				<!--订单查询导航 end-->
+				<!--日期控件-->
+				<div id="collapseTwo" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class="form-group">
+							<div>
+								<form class="form-horizontal">
+							  		<div class="form-group has-feedback">
+							  			<div class="col-md-1" style="padding-top:5px ;">
+							  				成交日期:
+							  			</div>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="datetimepicker" placeholder="开始时间">
+											<span class="glyphicon glyphicon-time form-control-feedback"></span>
+										</div>
+										<div class="col-md-1" style="padding-top:5px ;text-align:center;">
+							  				至
+							  			</div>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="datetimepicker2" placeholder="结束日期">
+											<span class="glyphicon glyphicon-time form-control-feedback"></span>
+										</div>
+										<div class="col-md-3">
+											<button type="button" class="btn btn-default">查询&nbsp;&nbsp;<span class="glyphicon glyphicon-search"></span></button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--日期控件-->
+
+				<!--内容展示 begin-->
+				<div class="table-responsive" id="orderData"></div>
+				<!--内容展示end-->
+			</div>
+		</div>
+		<div class="container">
+		<hr>
+			<!--首页底部信息 begin-->
+			<div th:replace="common/footer :: footer"></div>
+		</div>
+		<!--end-->
+		<script src="dist/js/jquery.min.js" th:src="@{/dist/js/jquery.min.js}"></script>
+		<script src="dist/js/bootstrap.min.js" th:src="@{/dist/js/bootstrap.min.js}"></script>
+		<script src="js/moment.js" th:src="@{/js/moment.js}" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap-datetimepicker.js" th:src="@{/js/bootstrap-datetimepicker.js}" type="text/javascript" charset="utf-8">
+		</script><script th:inline="javascript">
+			//获取应用路径
+			var contextPath = [[${#request.getContextPath()}]];
+		</script>
+
+		<script type="text/javascript">
+			$(function () {
+				$('#datetimepicker').datetimepicker({
+					format: 'YYYY-MM-DD',
+					locale: moment.locale('zh-cn')
+				});
+				$('#datetimepicker2').datetimepicker({
+					format: 'YYYY-MM-DD',
+					locale: moment.locale('zh-cn')
+				});
+			})
+
+			$(function () {
+				$("#orderData").load(contextPath + "/order/getOrderListData")
+			})
+			//
+			// function loadData(page,pageSize) {
+			// 	$("#orderData").load(contextPath + "/order/getOrderListData",queryData(page,pageSize))
+			// }
+			//
+			// //跳转到指定页
+			// function goPage(pageSize) {
+			// 	var page = $("#inputPage").val();
+			// 	$("#orderData").load(contextPath + "/order/getOrderListData",queryData(page,pageSize))
+			// }
+			//
+			// //修改指定每页显示的记录数
+			// function loadDataBySize(obj) {
+			// 	$("#orderData").load(contextPath + "/order/getOrderListData",queryData(1,obj.value))
+			// }
+			//
+			// //查询
+			// function queryOrderData() {
+			// 	var queryOrderNum = $("#queryOrderNum").val();
+			// 	$("#orderData").load(contextPath + "/order/getOrderListData",queryData(1,'',queryOrderNum));
+			// }
+			// function queryOrderStatus(val) {
+			// 	$("#orderData").load(contextPath + "/order/getOrderListData",queryData(1,'','',val));
+			// }
+			// function queryOrderBy(val) {
+			// 	$("#orderData").load(contextPath + "/order/getOrderListData",queryData(1,'','','',val));
+			// }
+			// function queryByDate() {
+			// 	var begin = $('#datetimepicker').val();
+			// 	var end = $('#datetimepicker2').val();
+			// 	$("#orderData").load(contextPath + "/order/getOrderListData",queryData(1,'','','','',begin,end));
+			// }
+		</script>
+	</body>
+</html>
